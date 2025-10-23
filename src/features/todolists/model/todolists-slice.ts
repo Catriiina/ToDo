@@ -1,4 +1,4 @@
-import {createAsyncThunk, createSlice, nanoid} from "@reduxjs/toolkit"
+import {createAsyncThunk, createSlice} from "@reduxjs/toolkit"
 import {Todolist} from "@/features/todolists/api/todolistsApi.types.ts";
 import {todolistsApi} from "@/features/todolists/api/todolistsApi.ts";
 
@@ -27,14 +27,17 @@ export const todolistsSlice = createSlice({
                     state[index].title = action.payload.title
                 }
             })
+            .addCase(createTodolistTC.fulfilled, (state, action) => {
+                state.push({ ...action.payload, filter: 'all' })
+            })
     },
   reducers: create => ({
-    createTodolistAC: create.preparedReducer(
-        (title: string) => ({ payload: { title, id: nanoid(), addedDate: new Date().toISOString(), order: 0 } }),
-        (state, action) => {
-          state.push({ ...action.payload, filter: 'all' })
-        }
-    ),
+    // createTodolistAC: create.preparedReducer(
+    //     (title: string) => ({ payload: { title, id: nanoid(), addedDate: new Date().toISOString(), order: 0 } }),
+    //     (state, action) => {
+    //       state.push({ ...action.payload, filter: 'all' })
+    //     }
+    // ),
     deleteTodolistAC: create.reducer<{ id: string }>((state, action) => {
       const index = state.findIndex(todolist => todolist.id === action.payload.id)
       if (index !== -1) {
@@ -59,7 +62,6 @@ export const todolistsSlice = createSlice({
 })
 
 export const { deleteTodolistAC,
-    createTodolistAC,
     changeTodolistFilterAC} =
     todolistsSlice.actions
 
@@ -83,6 +85,19 @@ export const changeTodolistTitleTC = createAsyncThunk(
         try {
             await todolistsApi.changeTodolistTitle(payload)
             return payload
+        } catch (error) {
+            return thunkAPI.rejectWithValue(error)
+        }
+    }
+)
+
+export const createTodolistTC = createAsyncThunk(
+    `${todolistsSlice.name}/createTodolistTC`,
+    async ( title: string, thunkAPI) => {
+        try {
+            const res = await todolistsApi.createTodolist(title)
+            const newTodolist = res.data.data.item
+            return  newTodolist
         } catch (error) {
             return thunkAPI.rejectWithValue(error)
         }
