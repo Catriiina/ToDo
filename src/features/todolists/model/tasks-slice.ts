@@ -1,5 +1,6 @@
 import { createSlice, nanoid } from "@reduxjs/toolkit"
 import {createTodolistTC, deleteTodolistTC, fetchTodolistsTC} from "./todolists-slice.ts"
+import {RootState} from "@/app/store.ts";
 
 export type Task = {
     id: string
@@ -72,3 +73,5 @@ export const tasksSlice = createSlice({
 
 export const { deleteTaskAC, createTaskAC, changeTaskStatusAC, changeTaskTitleAC } = tasksSlice.actions
 export const tasksReducer = tasksSlice.reducer
+
+export const selectTasks = (state: RootState): TasksState => state.tasks

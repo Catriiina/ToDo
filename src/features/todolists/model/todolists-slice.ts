@@ -1,6 +1,7 @@
 import {createAsyncThunk, createSlice} from "@reduxjs/toolkit"
 import {Todolist} from "@/features/todolists/api/todolistsApi.types.ts";
 import {todolistsApi} from "@/features/todolists/api/todolistsApi.ts";
+import {RootState} from "@/app/store.ts";
 
 export type FilterValues = "all" | "active" | "completed"
 
@@ -120,3 +121,5 @@ export const deleteTodolistTC = createAsyncThunk(
         }
     }
 )
+
+export const selectTodolists = (state: RootState): DomainTodolist[] => state.todolists
