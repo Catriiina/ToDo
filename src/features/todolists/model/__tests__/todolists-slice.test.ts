@@ -17,8 +17,8 @@ beforeEach(() => {
   todolistId2 = nanoid()
 
   startState = [
-    { id: todolistId1, title: 'What to learn', addedDate: '', order: 0, filter: 'all' },
-    { id: todolistId2, title: 'What to buy', addedDate: '', order: 0, filter: 'all' },
+    { id: todolistId1, title: 'What to learn', addedDate: '', order: 0, filter: 'all', entityStatus: "idle" },
+    { id: todolistId2, title: 'What to buy', addedDate: '', order: 0, filter: 'all', entityStatus: "loading"},
   ]
 })
 
@@ -45,6 +45,7 @@ test("correct todolist should be created", () => {
     addedDate: '',
     order: 0,
     filter: 'all',
+    entityStatus: "idle"
   }
   const endState = todolistsReducer(
       startState,
