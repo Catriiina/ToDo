@@ -10,7 +10,6 @@ import FormLabel from '@mui/material/FormLabel'
 import Grid from "@mui/material/Grid2"
 import TextField from '@mui/material/TextField'
 import {Controller, SubmitHandler, useForm} from "react-hook-form";
-import styles from "./Login.module.css"
 import {LoginInputs, loginSchema} from "@/features/auth/lib/schemas/loginSchema.ts";
 import {zodResolver} from "@hookform/resolvers/zod";
 
@@ -18,11 +17,9 @@ export const Login = () => {
     const themeMode = useAppSelector(selectThemeMode)
 
     const {
-        register,
         handleSubmit,
         reset,
         control,
-        formState: { errors },
     } = useForm<LoginInputs>({
         resolver: zodResolver(loginSchema),
         defaultValues: { email: '', password: '', rememberMe: false }
@@ -60,14 +57,33 @@ export const Login = () => {
                     </p>
                 </FormLabel>
                 <FormGroup>
-                    <TextField
-                        label="Email"
-                        margin="normal"
-                        error={!!errors.email}
-                        {...register('email')}
+                    <Controller
+                        name ="email"
+                        control={control}
+                        render={({ field, fieldState: { error } }) => (
+                            <TextField
+                                {...field}
+                                label="Email"
+                                type="email"
+                                error={!!error}
+                                helperText={error?.message}
+                                fullWidth
+                            />
+                        )}
+                        />
+                    <Controller
+                        name="password"
+                        control={control}
+                        render={({ field, fieldState: { error } }) => (
+                            <TextField
+                                {...field}
+                                label="Пароль"
+                                type="password"
+                                error={!!error}
+                                helperText={error?.message}
+                                fullWidth
+                                />)}
                     />
-                    {errors.email && <span className={styles.errorMessage}>{errors.email.message}</span>}
-                    <TextField type="password" label="Password" margin="normal" {...register('password')}/>
                     <FormControlLabel
                         label="Remember me"
                         control={
