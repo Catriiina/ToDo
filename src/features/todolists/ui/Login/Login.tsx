@@ -1,5 +1,5 @@
 import { selectThemeMode } from "@/app/app-slice"
-import { useAppSelector } from "@/common/hooks"
+import {useAppDispatch, useAppSelector} from "@/common/hooks"
 import { getTheme } from "@/common/theme"
 import Button from '@mui/material/Button'
 import Checkbox from '@mui/material/Checkbox'
@@ -12,6 +12,9 @@ import TextField from '@mui/material/TextField'
 import {Controller, SubmitHandler, useForm} from "react-hook-form";
 import {LoginInputs, loginSchema} from "@/features/auth/lib/schemas/loginSchema.ts";
 import {zodResolver} from "@hookform/resolvers/zod";
+import {loginTC, selectIsLoggedIn} from "@/features/auth/model/auth-slice.ts";
+import {Navigate} from "react-router";
+import {Path} from "@/common/routing/Routing.tsx";
 
 export const Login = () => {
     const themeMode = useAppSelector(selectThemeMode)
@@ -25,12 +28,19 @@ export const Login = () => {
         defaultValues: { email: '', password: '', rememberMe: false }
     })
 
+    const dispatch = useAppDispatch()
     const onSubmit: SubmitHandler<LoginInputs> = data => {
-        console.log(data)
+        dispatch(loginTC(data))
         reset()
     }
 
     const theme = getTheme(themeMode)
+
+    const isLoggedIn = useAppSelector(selectIsLoggedIn)
+
+    if (isLoggedIn) {
+        return <Navigate to={Path.Main} />
+    }
 
     return (
         <Grid container justifyContent={'center'}>

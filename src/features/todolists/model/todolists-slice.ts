@@ -117,7 +117,13 @@ export const todolistsSlice = createAppSlice({
     }),
 })
 
-export const { changeTodolistStatusAC, deleteTodolistTC, createTodolistTC, changeTodolistFilterAC, fetchTodolistsTC, changeTodolistTitleTC } = todolistsSlice.actions
+export const { changeTodolistStatusAC,
+    deleteTodolistTC,
+    createTodolistTC,
+    changeTodolistFilterAC,
+    fetchTodolistsTC,
+    changeTodolistTitleTC
+} = todolistsSlice.actions
 
 export const todolistsReducer = todolistsSlice.reducer
 
