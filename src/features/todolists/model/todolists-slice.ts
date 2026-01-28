@@ -4,6 +4,7 @@ import {RootState} from "@/app/store.ts";
 import {createAppSlice} from "@/common/utils/createAppSlice.ts";
 import {setAppStatusAC} from "@/app/app-slice.ts";
 import {RequestStatus} from "@/common/types";
+import {clearDataAC} from "@/common/actions";
 
 export type FilterValues = "all" | "active" | "completed"
 
@@ -115,6 +116,10 @@ export const todolistsSlice = createAppSlice({
             }
         ),
     }),
+    extraReducers: builder => {
+        builder
+            .addCase(clearDataAC, () => [] as DomainTodolist[])
+    },
 })
 
 export const { changeTodolistStatusAC,

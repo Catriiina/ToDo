@@ -23,6 +23,7 @@ export const Header = () => {
 
   const isLoggedIn = useAppSelector(selectIsLoggedIn)
 
+  const login = useAppSelector((state) => state.auth.login)
   const changeMode = () => {
     dispatch(changeThemeModeAC({ themeMode: themeMode === "light" ? "dark" : "light" }))
   }
@@ -39,6 +40,7 @@ export const Header = () => {
             <MenuIcon />
           </IconButton>
           <div>
+            {isLoggedIn && <span style={{ marginRight: '10px' }}>Hello, {login}!</span>}
             {isLoggedIn && <NavButton onClick={onLogoutClick}>Sign out</NavButton>}
             <NavButton background={theme.palette.primary.dark}>Faq</NavButton>
             <Switch color={"default"} onChange={changeMode} />
